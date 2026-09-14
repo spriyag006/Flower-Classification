@@ -1,0 +1,7 @@
+tensorflow
+flask
+pillow
+numpy
+matplotlib
+tensorflow==2.21.0
+gunicorn

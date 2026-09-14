@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Flower Classification</title>
+
+   <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #f3e8ff,
+        #d8b4fe,
+        #c084fc
+    );
+}
+
+.container {
+    width: 450px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.flower-icon {
+    font-size: 55px;
+
+    margin-bottom: 10px;
+}
+
+h1 {
+    color: #7e22ce;
+
+    font-size: 32px;
+
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #666;
+
+    margin-bottom: 25px;
+
+    font-size: 16px;
+}
+
+input[type="file"] {
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 20px;
+
+    border: 2px dashed #c084fc;
+
+    border-radius: 10px;
+
+    background: #faf5ff;
+}
+
+button {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #7e22ce;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #6b21a8;
+}
+
+.result {
+    margin-top: 30px;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    background: #f3e8ff;
+
+    border: 1px solid #d8b4fe;
+}
+
+.result h2 {
+    color: #555;
+
+    margin-bottom: 10px;
+}
+
+.prediction {
+    font-size: 30px;
+
+    font-weight: bold;
+
+    color: #7e22ce;
+
+    text-transform: capitalize;
+
+    margin-bottom: 10px;
+}
+
+.confidence {
+    color: #555;
+
+    margin-top: 10px;
+}
+
+.confidence strong {
+    color: #16a34a;
+}
+</style>
+   
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="flower-icon">
+            🌸
+        </div>
+
+        <h1>Flower Classification</h1>
+
+        <p class="subtitle">
+            Upload a flower image to identify its type.
+        </p>
+
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+
+            <input type="file"
+                   name="flower"
+                   accept="image/*"
+                   required>
+
+            <button type="submit">
+                🔍 Predict Flower
+            </button>
+
+        </form>
+
+        {% if prediction %}
+
+        <div class="result">
+
+            <h2>Prediction</h2>
+
+            <div class="prediction">
+                {{ prediction }}
+            </div>
+
+            <p class="confidence">
+                Confidence: <strong>{{ confidence }}%</strong>
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
