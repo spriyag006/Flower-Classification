@@ -53,7 +53,7 @@ def predict():
 
     predictions = model.predict(image_array)
 
-  y
+  
     predicted_index = np.argmax(predictions[0])
 
   
