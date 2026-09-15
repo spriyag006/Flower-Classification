@@ -1,7 +1,5 @@
-tensorflow
+tensorflow-cpu==2.21.0
 flask
 pillow
 numpy
-matplotlib
-tensorflow==2.21.0
 gunicorn
