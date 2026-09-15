@@ -1,25 +1,27 @@
 import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-os.environ["TF_NUM_INTRAOP_THREADS"] = "1"
-os.environ["TF_NUM_INTEROP_THREADS"] = "1"
-
 
 from flask import Flask, render_template, request
-import tensorflow as tf
 from PIL import Image
 import numpy as np
 import json
-tf.config.threading.set_intra_op_parallelism_threads(1)
-tf.config.threading.set_inter_op_parallelism_threads(1)
+
+try:
+    import tflite_runtime.interpreter as tflite
+except ImportError:
+    # Fallback if only full tensorflow is installed locally
+    import tensorflow.lite as tflite
 
 
 app = Flask(__name__)
 
-# Load model
-model = tf.keras.models.load_model(
-    "model/flower_model.keras"
-)
+# Load TFLite model
+interpreter = tflite.Interpreter(model_path="model/flower_model.tflite")
+interpreter.allocate_tensors()
+
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 # Load class names
 with open("model/class_names.json", "r") as f:
@@ -57,11 +59,10 @@ def predict():
     # Add batch dimension
     image_array = np.expand_dims(image_array, axis=0)
 
-    # Prediction
-    predictions = model.predict(
-        image_array,
-        verbose=0
-    )
+    # Prediction via TFLite interpreter
+    interpreter.set_tensor(input_details[0]['index'], image_array)
+    interpreter.invoke()
+    predictions = interpreter.get_tensor(output_details[0]['index'])
 
     predicted_index = np.argmax(predictions[0])
 
