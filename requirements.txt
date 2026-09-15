@@ -2,4 +2,4 @@ flask
 pillow
 numpy
 gunicorn
-tflite-runtime
+ai-edge-litert
